@@ -4,23 +4,40 @@
     <title>Web Socket Example</title>
     <meta charset="UTF-8">
     <script>
-	
-      window.onload = function() {
-        var s = new WebSocket("ws://localhost:8888/websocket");
-        s.onopen = function(e) { 
-			alert("opened");
-			s.send("max");
-		}
-        s.onclose = function(e) { 
-			alert("closed"); 
-		}
-        s.onmessage = function(e) {
-			alert("Client: " + e.data);
-		}
-      };
+
+  var s = ""; // global connection 
+  function main(){
+    s = new WebSocket("ws://localhost:8888/websocket");
+    alert(s);
+    s.onopen = function(e) { 
+      alert("You are now Connected With Server");
+    }
+    s.onclose = function(e) { 
+      alert("Problems Connecting with Server: Connection has been lost"); 
+    }
+    s.onmessage = function(e) {
+      alert("Server Data: " + e.data);
+    }
+  }
+
+  function sendmsg(){
+    alert(s);
+    var x = document.getElementById("looper");
+    alert(x.value);
+    s.send(x.value);
+  }
+
+
     </script>
+  }
   </head>
     <body>
       <div id="holder" style="width:600px; height:300px"></div>
+      <input type="button" value="connect" onclick="main();" /> <br>
+      <form>
+      Nickname:<br>
+      <input id="looper" type="text" name="nickname" value=""> <br>
+      <input type="button" value="send msg" onclick="sendmsg();" />
+      </form>
     </body>
 </html>
