@@ -28,7 +28,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 			self.write_message(message)
 			for j in range(len(id)):
 				print "for loop"
-				clients[id[j]].write_message("mas putos")
+				clients[id[j]].write_message("Noe of the Above")
 			self.write_message("Server has accepted your connection")
 			print "the client send: ", message
 		else:
