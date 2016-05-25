@@ -3,7 +3,9 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 import uuid
+import json
 import vars
+
 id = {}
 clients = {}
 i = 0
@@ -22,19 +24,30 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 		i+=1
 		clients[self.id] = self
 		print(self.id)
-		self.write_message("Server has accepted your connection")
+		self.write_message(vars.SERVER_ACK)
 		
 	def on_message(self, message):
-		if "max" in message:
-			self.write_message(message)
+		data = json.loads(message)
+		user = data[vars.CLIENT_SEND][vars.FROM_USER]
+		if "max" in user:
 			for j in range(len(id)):
-				print "for loop"
-#				clients[id[j]].write_message("Noe of the Above")
-			self.write_message("Server has accepted your connection")
-			print "the client send: ", message
-		else:
-			print "Hello Jose"
+				if clients[id[j]].id == self.id: # look if name has been assigned an id
+					#if so print bot ID's and print name and send ack
+					print clients[id[j]].id
+					print self.id
+					print "Server ack", data[vars.CLIENT_SEND][vars.FROM_USER]
+					clients[id[j]].write_message(vars.SERVER_ACK)
+		elif"jose" in user:
+			for j in range(len(id)):
+				if clients[id[j]].id == self.id: # look if name has been assigned an id
+					#if so print bot ID's and print name and send ack
+					print clients[id[j]].id
+					print self.id
+					print "Server ack", data[vars.CLIENT_SEND][vars.FROM_USER]
+					clients[id[j]].write_message(vars.SERVER_ACK)
 		#	self.close() #closes connection to websockets
+		else:
+			self.write_message(vars.SERVER_ERR)
 		
 		
 	def on_close(self):
