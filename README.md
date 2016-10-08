@@ -1,2 +1,2 @@
 # battlegame
-none yet
+none yet cept Richard's git test
